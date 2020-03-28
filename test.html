@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id='btn'>去百度</button>
+    <button id='btn2'>测试</button>
+    <script>
+        var btn = document.getElementById('btn')
+        var btn2 = document.getElementById('btn2')
+        var chidPage
+        btn.addEventListener('click',() =>{
+            console.log('success');
+            chidPage = window.open('http://localhost:9528/#/login')
+        })
+        
+        btn2.addEventListener('click',() =>{
+            console.log(chidPage);
+            
+        })
+    </script>
+</body>
+</html>
