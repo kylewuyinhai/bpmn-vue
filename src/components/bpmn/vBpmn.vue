@@ -1,6 +1,7 @@
 <template>
   <div class="v-bpmn">
     <div class="canvas" ref="canvas"></div>
+    <panel v-if="bpmnModeler" :modeler="bpmnModeler"/>
     <div id="js-properties-panel" class="panel"></div>
     <ul class="buttons">
       <li>
@@ -15,17 +16,21 @@
 
 <script>
 // import BpmnModeler from "bpmn-js/lib/Modeler";
-import propertiesPanelModule from "bpmn-js-properties-panel";
+// import propertiesPanelModule from "bpmn-js-properties-panel";
 // 自定义的 properties-panel内容
-import propertiesProviderModule from "./CustomPanel/provider/authority";
+// import propertiesProviderModule from "./CustomPanel/provider/authority";
 // 引入描述文件
-import authorityModdleDescriptor from "./CustomPanel/descriptors/authority";
+// import authorityModdleDescriptor from "./CustomPanel/descriptors/authority";
 // import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
 import customTranslate from "./CustomTranslate"; //汉化引入
 import customModeler from "./customModeler";
 import { xmlStr } from "./mock";
+import panel from './propertyPanel'
 export default {
   name: "vBpmn",
+  components: {
+    panel
+  },
   data() {
     return {
       bpmnModeler: null,
@@ -51,13 +56,13 @@ export default {
 
         additionalModules: [
           // 左边工具栏以及节点
-          propertiesProviderModule,
-          propertiesPanelModule,
+          // propertiesProviderModule,
+          // propertiesPanelModule,
           { translate: ["value", customTranslate] }
         ],
         moddleExtensions: {
           // camunda: camundaModdleDescriptor,
-          authority: authorityModdleDescriptor
+          // authority: authorityModdleDescriptor
         }
       });
       this.bpmnModeler.importXML(xmlStr, err => {
