@@ -1,34 +1,42 @@
 
-// utils/util.js
 const flowAction = { // 线
     type: 'global-connect-tool',
-    action: ['bpmn:SequenceFlow', 'tools', 'icon-custom icon-custom-flow', '连接线']
+    action: ['bpmn:SequenceFlow', 'tools', 'bpmn-icon-connection-multi', '连接线']
 }
 const customShapeAction = [ // shape
     {
         type: 'create.start-event',
-        action: ['bpmn:StartEvent', 'event', 'icon-custom icon-custom-start', '开始节点']
-    },
-    {
-        type: 'create.end-event',
-        action: ['bpmn:EndEvent', 'event', 'icon-custom icon-custom-end', '结束节点']
+        action: ['bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none', '开始节点']
     },
     {
         type: 'create.task',
-        action: ['bpmn:Task', 'activity', 'icon-custom icon-custom-task', '普通任务']
+        action: ['bpmn:Task', 'activity', 'bpmn-icon-task', '普通任务']
     },
     {
-        type: 'create.businessRule-task',
-        action: ['bpmn:BusinessRuleTask', 'activity', 'icon-custom icon-custom-businessRule', 'businessRule任务']
+        type: 'create.business-rules-task',
+        action: ['bpmn:BusinessRuleTask', 'activity', 'bpmn-icon-business-rule-task', '转填任务']
     },
     {
-        type: 'create.exclusive-gateway',
-        action: ['bpmn:ExclusiveGateway', 'activity', 'icon-custom icon-custom-exclusive-gateway', '网关']
+        type: 'create.mail-task',
+        action: ['bpmn:SendTask', 'activity', 'bpmn-icon-send-task', '抄送任务']
     },
     {
-        type: 'create.dataObjectReference',
-        action: ['bpmn:DataObjectReference', 'activity', 'icon-custom icon-custom-data', '变量']
-    }
+        type: 'create.end-event',
+        action: ['bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none', '结束节点']
+    },
+
+    // {
+    //     type: 'create.businessRule-task',
+    //     action: ['bpmn:BusinessRuleTask', 'activity', 'icon-custom icon-custom-businessRule', 'businessRule任务']
+    // },
+    // {
+    //     type: 'create.exclusive-gateway',
+    //     action: ['bpmn:ExclusiveGateway', 'activity', 'icon-custom icon-custom-exclusive-gateway', '网关']
+    // },
+    // {
+    //     type: 'create.dataObjectReference',
+    //     action: ['bpmn:DataObjectReference', 'activity', 'icon-custom icon-custom-data', '变量']
+    // }
 ]
 const customFlowAction = [
     flowAction

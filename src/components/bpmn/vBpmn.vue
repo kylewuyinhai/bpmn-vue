@@ -1,8 +1,7 @@
 <template>
   <div class="v-bpmn">
     <div class="canvas" ref="canvas"></div>
-    <panel v-if="bpmnModeler" :modeler="bpmnModeler"/>
-    <div id="js-properties-panel" class="panel"></div>
+    <panel class="panel" v-if="bpmnModeler" :modeler="bpmnModeler"/>
     <ul class="buttons">
       <li>
         <a ref="saveDiagram" href="javascript:" title="保存为bpmn">保存为bpmn</a>
@@ -48,12 +47,6 @@ export default {
       const canvas = this.$refs.canvas;
       this.bpmnModeler = new customModeler({
         container: canvas,
-        //添加控制板
-        propertiesPanel: {
-          parent: "#js-properties-panel"
-        },
-        //汉化
-
         additionalModules: [
           // 左边工具栏以及节点
           // propertiesProviderModule,
@@ -78,12 +71,67 @@ export default {
     },
     success() {
       console.log("创建成功");
-    }
+      this.addBpmnListener()
+    },
+     // 添加绑定事件
+		addBpmnListener() {
+			const that = this;
+			// 获取a标签dom节点
+			const downloadLink = this.$refs.saveDiagram;
+			// const downloadSvgLink = this.$refs.saveSvg;
+			// 给图绑定事件，当图有发生改变就会触发这个事件
+			this.bpmnModeler.on("commandStack.changed", function() {
+					that.saveDiagram(function(err, xml) {
+					console.log(xml);
+					that.setEncoded(downloadLink, "diagram.bpmn", err ? null : xml);
+				});
+			});
+    },
+    saveDiagram(done) {
+            this.bpmnModeler.saveXML({ format: true }, function(err, xml) {
+                // if (!err) {
+                //     FileSaver.saveAs(new Blob([xml], { type: 'application/octet-stream' }), 'diagram.bpmn')
+				// }
+				done(err, xml);
+            })
+        },
+        saveSVG() {
+            this.bpmnModeler.saveSVG({ format: true }, function(err, svg) {
+                console.log(err);
+                console.log(svg);
+                
+            })
+        },
+        setEncoded(link, name, data) {
+		// 把xml转换为URI，下载要用到的
+			// const encodedData = encodeURIComponent(data)
+			// 下载图的具体操作,改变a的属性，className令a标签可点击，href令能下载，download是下载的文件的名字
+			//   console.log(link, name, data)
+			let xmlFile = new File([data], 'test.bpmn')
+				console.log(xmlFile)
+			// if (data) {
+			// 	link.className = 'active'
+			// 	link.href = 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData
+			// 	link.download = name
+			// }
+		},
   }
 };
 </script>
 
 <style>
+.djs-palette{
+  top: 50%;
+  transform: translateY(50%);
+  width: 80px !important;
+  text-align: center;
+}
+.djs-palette .entry, .djs-palette .djs-palette-toggle{
+  width: 80px !important;
+  height: 60px !important;
+  font-size: 40px !important;
+  line-height: 50px !important;
+}
 .v-bpmn {
   background-color: #ffffff;
   width: 100%;
@@ -97,7 +145,11 @@ export default {
   position: absolute;
   right: 0;
   top: 0;
-  width: 300px;
+  width: 400px;
+  height: 100%;
+  border: 1px solid #f3f3f3;
+  box-sizing: border-box;
+  z-index: 10000000;
 }
 .buttons {
   position: absolute;
