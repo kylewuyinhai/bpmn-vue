@@ -60,7 +60,7 @@ const customShapeAction = [{
     },
     {
         type: 'create.mail-task',
-        action: ['bpmn:BusinessRuleTask', 'activity', 'bpmn-icon-send-task', '转填任务']
+        action: ['bpmn:SendTask', 'activity', 'bpmn-icon-send-task', '转填任务']
     },
     {
         type: 'create.exclusive-gateway',

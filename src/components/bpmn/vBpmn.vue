@@ -1,7 +1,7 @@
 <template>
   <div class="v-bpmn">
     <div class="canvas" ref="canvas"></div>
-    <panel class="panel" v-if="bpmnModeler" :modeler="bpmnModeler"/>
+    <panel class="panel" v-if="bpmnModeler" :modeler="bpmnModeler" />
     <ul class="buttons">
       <li>
         <a ref="saveDiagram" href="javascript:" title="保存为bpmn">保存为bpmn</a>
@@ -21,10 +21,11 @@
 // 引入描述文件
 // import authorityModdleDescriptor from "./CustomPanel/descriptors/authority";
 // import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
+import gridModule from "diagram-js/lib/features/grid-snapping/visuals";
 import customTranslate from "./CustomTranslate"; //汉化引入
 import customModeler from "./customModeler";
 import { xmlStr } from "./mock";
-import panel from './propertyPanel'
+import panel from "./propertyPanel";
 export default {
   name: "vBpmn",
   components: {
@@ -51,6 +52,7 @@ export default {
           // 左边工具栏以及节点
           // propertiesProviderModule,
           // propertiesPanelModule,
+          gridModule,
           { translate: ["value", customTranslate] }
         ],
         moddleExtensions: {
@@ -71,62 +73,62 @@ export default {
     },
     success() {
       console.log("创建成功");
-      this.addBpmnListener()
+      this.addBpmnListener();
     },
-     // 添加绑定事件
-		addBpmnListener() {
-			const that = this;
-			// 获取a标签dom节点
-			const downloadLink = this.$refs.saveDiagram;
-			// const downloadSvgLink = this.$refs.saveSvg;
-			// 给图绑定事件，当图有发生改变就会触发这个事件
-			this.bpmnModeler.on("commandStack.changed", function() {
-					that.saveDiagram(function(err, xml) {
-					console.log(xml);
-					that.setEncoded(downloadLink, "diagram.bpmn", err ? null : xml);
-				});
-			});
+    // 添加绑定事件
+    addBpmnListener() {
+      const that = this;
+      // 获取a标签dom节点
+      const downloadLink = this.$refs.saveDiagram;
+      // const downloadSvgLink = this.$refs.saveSvg;
+      // 给图绑定事件，当图有发生改变就会触发这个事件
+      this.bpmnModeler.on("commandStack.changed", function() {
+        that.saveDiagram(function(err, xml) {
+          console.log(xml);
+          that.setEncoded(downloadLink, "diagram.bpmn", err ? null : xml);
+        });
+      });
     },
     saveDiagram(done) {
-            this.bpmnModeler.saveXML({ format: true }, function(err, xml) {
-                // if (!err) {
-                //     FileSaver.saveAs(new Blob([xml], { type: 'application/octet-stream' }), 'diagram.bpmn')
-				// }
-				done(err, xml);
-            })
-        },
-        saveSVG() {
-            this.bpmnModeler.saveSVG({ format: true }, function(err, svg) {
-                console.log(err);
-                console.log(svg);
-                
-            })
-        },
-        setEncoded(link, name, data) {
-		// 把xml转换为URI，下载要用到的
-			// const encodedData = encodeURIComponent(data)
-			// 下载图的具体操作,改变a的属性，className令a标签可点击，href令能下载，download是下载的文件的名字
-			//   console.log(link, name, data)
-			let xmlFile = new File([data], 'test.bpmn')
-				console.log(xmlFile)
-			// if (data) {
-			// 	link.className = 'active'
-			// 	link.href = 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData
-			// 	link.download = name
-			// }
-		},
+      this.bpmnModeler.saveXML({ format: true }, function(err, xml) {
+        // if (!err) {
+        //     FileSaver.saveAs(new Blob([xml], { type: 'application/octet-stream' }), 'diagram.bpmn')
+        // }
+        done(err, xml);
+      });
+    },
+    saveSVG() {
+      this.bpmnModeler.saveSVG({ format: true }, function(err, svg) {
+        console.log(err);
+        console.log(svg);
+      });
+    },
+    setEncoded(link, name, data) {
+      // 把xml转换为URI，下载要用到的
+      // const encodedData = encodeURIComponent(data)
+      // 下载图的具体操作,改变a的属性，className令a标签可点击，href令能下载，download是下载的文件的名字
+      //   console.log(link, name, data)
+      let xmlFile = new File([data], "test.bpmn");
+      console.log(xmlFile);
+      // if (data) {
+      // 	link.className = 'active'
+      // 	link.href = 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData
+      // 	link.download = name
+      // }
+    }
   }
 };
 </script>
 
 <style>
-.djs-palette{
+.djs-palette {
   top: 50%;
   transform: translateY(50%);
   width: 80px !important;
   text-align: center;
 }
-.djs-palette .entry, .djs-palette .djs-palette-toggle{
+.djs-palette .entry,
+.djs-palette .djs-palette-toggle {
   width: 80px !important;
   height: 60px !important;
   font-size: 40px !important;
@@ -149,7 +151,6 @@ export default {
   height: 100%;
   border: 1px solid #f3f3f3;
   box-sizing: border-box;
-  z-index: 10000000;
 }
 .buttons {
   position: absolute;
