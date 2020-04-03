@@ -21,7 +21,7 @@
 // 引入描述文件
 // import authorityModdleDescriptor from "./CustomPanel/descriptors/authority";
 // import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
-import gridModule from "diagram-js/lib/features/grid-snapping/visuals";
+import flowableModdleDescriptor from "./flowable";
 import customTranslate from "./CustomTranslate"; //汉化引入
 import customModeler from "./customModeler";
 import { xmlStr } from "./mock";
@@ -52,12 +52,12 @@ export default {
           // 左边工具栏以及节点
           // propertiesProviderModule,
           // propertiesPanelModule,
-          gridModule,
           { translate: ["value", customTranslate] }
         ],
         moddleExtensions: {
           // camunda: camundaModdleDescriptor,
           // authority: authorityModdleDescriptor
+          flowable: flowableModdleDescriptor
         }
       });
       this.bpmnModeler.importXML(xmlStr, err => {
@@ -136,8 +136,21 @@ export default {
 }
 .v-bpmn {
   background-color: #ffffff;
+  position: absolute;
+  background: white;
+  background-image: linear-gradient(
+      90deg,
+      rgba(220, 220, 220, 0.5) 6%,
+      transparent 0
+    ),
+    linear-gradient(rgba(192, 192, 192, 0.5) 6%, transparent 0),
+    linear-gradient(rgba(192, 192, 192, 0.5) 1px, transparent 0),
+    linear-gradient(90deg, rgba(192, 192, 192, 0.5) 1px, transparent 0);
+  background-size: 15px 15px, 15px 15px, 75px 75px, 75px 75px;
   width: 100%;
-  height: calc(100vh - 52px);
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 .canvas {
   width: 100%;
@@ -151,6 +164,7 @@ export default {
   height: 100%;
   border: 1px solid #f3f3f3;
   box-sizing: border-box;
+  background: #fff;
 }
 .buttons {
   position: absolute;
