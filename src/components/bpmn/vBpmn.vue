@@ -2,6 +2,7 @@
   <div class="v-bpmn">
     <div class="canvas" ref="canvas"></div>
     <panel class="panel" v-if="bpmnModeler" :modeler="bpmnModeler" />
+    <!-- <div id="js-properties-panel" class="panel"></div> -->
     <ul class="buttons">
       <li>
         <a ref="saveDiagram" href="javascript:" title="保存为bpmn">保存为bpmn</a>
@@ -21,7 +22,10 @@
 // 引入描述文件
 // import authorityModdleDescriptor from "./CustomPanel/descriptors/authority";
 // import propertiesProviderModule from "bpmn-js-properties-panel/lib/provider/camunda";
-import flowableModdleDescriptor from "./flowable";
+import activitiModdleDescriptor from "./activiti.json";
+
+// import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/activiti'
+// import activitiModdleDescriptor from "activiti-bpmn-moddle/resources/activiti";
 import customTranslate from "./CustomTranslate"; //汉化引入
 import customModeler from "./customModeler";
 import { xmlStr } from "./mock";
@@ -48,6 +52,9 @@ export default {
       const canvas = this.$refs.canvas;
       this.bpmnModeler = new customModeler({
         container: canvas,
+        propertiesPanel: {
+          parent: "#js-properties-panel"
+        },
         additionalModules: [
           // 左边工具栏以及节点
           // propertiesProviderModule,
@@ -57,7 +64,7 @@ export default {
         moddleExtensions: {
           // camunda: camundaModdleDescriptor,
           // authority: authorityModdleDescriptor
-          flowable: flowableModdleDescriptor
+          activiti: activitiModdleDescriptor
         }
       });
       this.bpmnModeler.importXML(xmlStr, err => {
