@@ -31,16 +31,27 @@
           </template>
           <el-form :model="userTask" label-width="100px" size="small">
             <el-form-item :label="isStart ? '发起人类型' : '执行人类型'">
-              <el-select v-model="userTask.assigneeType" placeholder="请选择">
+              <el-select
+                v-model="userTask.assigneeType"
+                placeholder="请选择"
+                @change="handelChangeUser($event,'assigneeType')"
+              >
                 <el-option label="指定执行人" value="1"></el-option>
                 <el-option label="指定角色" value="2"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item :label="isStart ? '选择发起人' : '选择执行人'">
+              <el-input
+                type="text"
+                name
+                id
+                v-model="userTask.assignees"
+                @change="handelChangeUser($event,'assignees')"
+              />
               <el-card class="box-card">
-                <el-tag type='info' class="user-tag">标签一</el-tag>
-                <el-tag type='info'>标签二</el-tag>
-                <el-button class="choose-user" type='text' icon="el-icon-s-tools" circle></el-button>
+                <el-tag type="info" class="user-tag">标签一</el-tag>
+                <el-tag type="info">标签二</el-tag>
+                <el-button class="choose-user" type="text" icon="el-icon-s-tools" circle></el-button>
               </el-card>
             </el-form-item>
           </el-form>
@@ -51,24 +62,42 @@
           </template>
           <el-form :model="operation" label-width="100px" size="small">
             <el-form-item v-if="hasSelectForm" label="选择表单">
-              <el-input v-model="operation.isForm" clearable readonly class="el_input">
-                <el-button slot="append" icon="el-icon-more" @click="handleSelectForm()" />
+              <el-input
+                v-model="operation.isForm"
+                clearable
+                class="el_input"
+                @change="handleChangeOperation('isForm')"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-more"
+                  @click="handleChangeOperation('isForm')"
+                />
               </el-input>
             </el-form-item>
             <el-form-item v-if="!isStart" label="回退方式">
-              <el-radio-group v-model="operation.backType" @change="handleChangeOperation('backType')">
+              <el-radio-group
+                v-model="operation.backType"
+                @change="handleChangeOperation('backType')"
+              >
                 <el-radio :label="1">上一步</el-radio>
                 <el-radio :label="2">发起人</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="不满足条件时">
-              <el-radio-group v-model="operation.unCondition" @change="handleChangeOperation('unCondition')">
+              <el-radio-group
+                v-model="operation.unCondition"
+                @change="handleChangeOperation('unCondition')"
+              >
                 <el-radio :label="1">结束流程</el-radio>
                 <el-radio :label="2">退回发始人</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="消息提醒">
-              <el-checkbox-group v-model="operation.messageTip"  @change="handleChangeMessage">
+              <el-checkbox-group
+                v-model="operation.messageTip"
+                @change="handleChangeOperation('messageTip')"
+              >
                 <el-checkbox :label="1">上一步</el-checkbox>
                 <el-checkbox :label="2">下一步</el-checkbox>
                 <el-checkbox :label="3">发起人</el-checkbox>
@@ -84,7 +113,7 @@
           </template>
           <el-form :model="flow" label-width="100px" size="small">
             <el-form-item>
-              <el-input v-model="flow.condition" placeholder  @input="updateFlow"></el-input>
+              <el-input v-model="flow.condition" placeholder @input="updateFlow"></el-input>
             </el-form-item>
           </el-form>
         </el-collapse-item>
@@ -204,13 +233,16 @@ export default {
       if (!this.element) {
         return;
       }
-      return this.element.type === 'bpmn:SendTask'
+      return this.element.type === "bpmn:SendTask";
     },
     hasSelectForm() {
       if (!this.element) {
         return;
       }
-      return this.element.type === 'bpmn:StartEvent' || this.element.type === 'bpmn:BusinessRuleTask'
+      return (
+        this.element.type === "bpmn:StartEvent" ||
+        this.element.type === "bpmn:BusinessRuleTask"
+      );
     },
     isEvent() {
       if (!this.element) {
@@ -279,17 +311,25 @@ export default {
     randomString,
     init() {
       const that = this;
+      this.modeler.on("shape.added", e => {
+        console.log(e, "addd");
+        this.$nextTick(() => {
+          this.element = e.element;
+          this.setDefaultProperties(e.element);
+        });
+        console.log(e, "addd");
+      });
       this.modeler.on("selection.changed", e => {
-        console.log('selection change');
-        
+        console.log("selection change");
+
         that.selectedElements = e.newSelection;
         that.element = e.newSelection[0];
         that.rootElement = null;
         that.setDefaultProperties(that.element);
       });
       this.modeler.on("element.changed", e => {
-        console.log('element change');
-        
+        console.log("element change");
+
         const { element } = e;
         const { element: currentElement } = this;
         if (!currentElement) {
@@ -301,9 +341,8 @@ export default {
         }
       });
       this.modeler.on("element.click", e => {
-        console.log('element click');
+        console.log("element click");
         // that.setDefaultProperties(that.element);
-        
         if (!that.element) {
           that.rootElement = e.element;
           that.setDefaultProperties(that.element);
@@ -317,43 +356,43 @@ export default {
       });
     },
     setDefaultProperties(element) {
-      console.log(element);
+      console.log(element, "serDefaule");
       if (element) {
         const { businessObject } = element;
         // const candidateStarterUsersNames = this.form.candidateStarterUsersNames;
         this.form = {
           name: businessObject.name,
-          handleMode: (businessObject.$attrs.handleMode || 1)
+          handleMode: businessObject.handleMode || 1
         };
         this.userTask = {
-          assigneeType: businessObject.$attrs.assigneeType || '1',
-          candidateUsersName: businessObject.$attrs.candidateUsersName || ''
-        }
+          assigneeType: businessObject.assigneeType || "1",
+          assignees: businessObject.assignees || ""
+        };
         this.operation = {
-          backType: +(businessObject.$attrs.backType || 1),
-          unCondition: +(businessObject.$attrs.unCondition || 1),
-          messageTip:  businessObject.$attrs.messageTip||[1],
-          isForm: businessObject.$attrs.isForm || ''
-        }
-        console.log( typeof businessObject.$attrs.messageTip);
-        if(typeof businessObject.$attrs.messageTip==='string'){
-          this.operation.messageTip = businessObject.$attrs.messageTip.split(',')
+          backType: +(businessObject.backType || 1),
+          unCondition: +(businessObject.unCondition || 1),
+          messageTip: businessObject.messageTip || [1],
+          isForm: businessObject.isForm || ""
+        };
+        console.log(typeof businessObject.messageTip);
+        if (typeof businessObject.messageTip === "string") {
+          this.operation.messageTip = businessObject.messageTip.split(",");
           const temArray = this.operation.messageTip.map(e => {
-            return +e
-          })
-          this.operation.messageTip = temArray
+            return +e;
+          });
+          this.operation.messageTip = temArray;
         }
         // if(businessObject.$attrs.messageTip){
         //   console.log(businessObject.$attrs.messageTip, typeof businessObject.$attrs.messageTip);
-          
+
         //   this.operation.messageTip = typeof businessObject.$attrs.messageTip === 'string' ? [...(businessObject.$attrs.messageTip.split(','))] : JSON.parse(JSON.stringify(businessObject.$attrs.messageTip))
         // } else {
         //   this.operation.messageTip = [1]
         // }
         this.flow = {
-          condition: businessObject.$attrs.condition || '',
-          transferData: businessObject.$attrs.transferData || {}
-        }
+          condition: businessObject.condition || "",
+          transferData: businessObject.transferData || {}
+        };
         // this.form.candidateStarterUsersNames = candidateStarterUsersNames;
         // if (element.type === "bpmn:Process") {
         //   this.setProcessUser();
@@ -527,6 +566,8 @@ export default {
      */
     updateProperties(properties) {
       const modeling = this.modeler.get("modeling");
+      console.log(this.element);
+
       modeling.updateProperties(
         this.element ? this.element : this.rootElement,
         properties
@@ -814,35 +855,39 @@ export default {
     handleChangeModel(value) {
       this.updateProperties({ handleMode: value });
     },
-    updateFlow(value){
-      const { businessObject } = this.element
-      const moddle = this.modeler.get('moddle')
-      if(businessObject.$type === 'bpmn:SequenceFlow' && !businessObject.conditionExpression){
+    updateFlow(value) {
+      const { businessObject } = this.element;
+      const moddle = this.modeler.get("moddle");
+      if (
+        businessObject.$type === "bpmn:SequenceFlow" &&
+        !businessObject.conditionExpression
+      ) {
         businessObject.conditionExpression = moddle.create(
           "bpmn:FormalExpression",
-          {body: value}
-        )
-      } else if(businessObject.conditionExpression){
-        businessObject.conditionExpression.body = value
+          { body: value }
+        );
+      } else if (businessObject.conditionExpression) {
+        businessObject.conditionExpression.body = value;
       }
       this.updateProperties({ condition: value });
     },
     handleChangeOperation(type) {
-      let value = JSON.parse(JSON.stringify(this.operation[type]))
+      let value = JSON.parse(JSON.stringify(this.operation[type]));
       console.log(value);
-      
-      console.log(Array.isArray(value));
-      
-      let properties = {}
-      properties[type] = value
-      this.updateProperties(properties)
-    },
-    handleChangeMessage(e){
-      console.log(this.operation.messageTip,'message');
-      this.updateProperties({messageTip: e})
-      console.log(e);
 
-      
+      console.log(Array.isArray(value));
+
+      let properties = {};
+      properties[type] = value;
+      this.updateProperties(properties);
+    },
+    handelChangeUser(e, type) {
+      this.updateProperties({ [type]: e });
+    },
+    handleChangeMessage(e) {
+      console.log(this.operation.messageTip, "message");
+      this.updateProperties({ messageTip: e });
+      console.log(e);
     }
   }
 };
@@ -862,24 +907,26 @@ export default {
 .el_input {
   width: 280px;
 }
-.box-card{
+.box-card {
   width: 250px;
   height: 100px;
   position: relative;
-  border: 1px solid #DCDFE6;
+  border: 1px solid #dcdfe6;
 }
-.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover{
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0) !important;
+.el-card.is-always-shadow,
+.el-card.is-hover-shadow:focus,
+.el-card.is-hover-shadow:hover {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0) !important;
 }
-.el-card__body{
+.el-card__body {
   padding: 10px !important;
 }
-.choose-user{
+.choose-user {
   position: absolute;
   bottom: 0;
   right: 0;
 }
-.user-tag{
+.user-tag {
   margin-right: 8px;
 }
 </style>

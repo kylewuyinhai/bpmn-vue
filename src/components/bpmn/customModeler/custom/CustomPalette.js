@@ -37,7 +37,8 @@ PaletteProvider.prototype.getPaletteEntries = function () {
         globalConnect,
         translate
     } = this;
-
+    console.log('this=>>>>>>>>>>>>>>>>>>>',this);
+    
     function createConnect(type, group, className, title) {
         return {
             group,
@@ -59,6 +60,8 @@ PaletteProvider.prototype.getPaletteEntries = function () {
             }
             create.start(event, shape)
         }
+        console.log(createListener);
+        
         const shortType = type.replace(/^bpmn:/, '')
         return {
             group,

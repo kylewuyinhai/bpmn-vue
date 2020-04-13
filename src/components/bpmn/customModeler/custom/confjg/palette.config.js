@@ -6,37 +6,24 @@ const flowAction = { // 线
 const customShapeAction = [ // shape
     {
         type: 'create.start-event',
-        action: ['bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none', '开始节点']
+        action: ['bpmn:StartEvent', 'event', 'icon-custom icon-custom-start', '开始节点']
     },
     {
         type: 'create.task',
-        action: ['bpmn:Task', 'activity', 'bpmn-icon-task', '普通任务']
+        action: ['bpmn:Task', 'activity', 'icon-custom-task-none', '普通任务']
     },
     {
-        type: 'create.business-rules-task',
-        action: ['bpmn:BusinessRuleTask', 'activity', 'bpmn-icon-business-rule-task', '转填任务']
+        type: 'create.change-task',
+        action: ['bpmn:Task', 'activity', 'icon-custom-task-change palette-title', '转填任务']
     },
     {
-        type: 'create.mail-task',
-        action: ['bpmn:SendTask', 'activity', 'bpmn-icon-send-task', '抄送任务']
+        type: 'create.CC-task',
+        action: ['bpmn:Task', 'activity', 'icon-custom-task-cc palette-title', '抄送任务']
     },
     {
         type: 'create.end-event',
-        action: ['bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none', '结束节点']
+        action: ['bpmn:EndEvent', 'event', 'icon-custom icon-custom-end', '结束节点']
     },
-
-    // {
-    //     type: 'create.businessRule-task',
-    //     action: ['bpmn:BusinessRuleTask', 'activity', 'icon-custom icon-custom-businessRule', 'businessRule任务']
-    // },
-    // {
-    //     type: 'create.exclusive-gateway',
-    //     action: ['bpmn:ExclusiveGateway', 'activity', 'icon-custom icon-custom-exclusive-gateway', '网关']
-    // },
-    // {
-    //     type: 'create.dataObjectReference',
-    //     action: ['bpmn:DataObjectReference', 'activity', 'icon-custom icon-custom-data', '变量']
-    // }
 ]
 const customFlowAction = [
     flowAction

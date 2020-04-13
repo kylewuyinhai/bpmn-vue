@@ -87,12 +87,15 @@ export default {
       const that = this;
       // 获取a标签dom节点
       const downloadLink = this.$refs.saveDiagram;
-      // const downloadSvgLink = this.$refs.saveSvg;
+      const downloadSvgLink = this.$refs.saveSvg;
       // 给图绑定事件，当图有发生改变就会触发这个事件
       this.bpmnModeler.on("commandStack.changed", function() {
         that.saveDiagram(function(err, xml) {
           console.log(xml);
           that.setEncoded(downloadLink, "diagram.bpmn", err ? null : xml);
+        });
+        that.saveSVG(function(err, svg) {
+          that.setEncoded(downloadSvgLink, "diagram.svg", err ? null : svg);
         });
       });
     },
@@ -104,24 +107,21 @@ export default {
         done(err, xml);
       });
     },
-    saveSVG() {
-      this.bpmnModeler.saveSVG({ format: true }, function(err, svg) {
-        console.log(err);
-        console.log(svg);
-      });
+    saveSVG(done) {
+      this.bpmnModeler.saveSVG(done)
     },
     setEncoded(link, name, data) {
       // 把xml转换为URI，下载要用到的
-      // const encodedData = encodeURIComponent(data)
+      const encodedData = encodeURIComponent(data)
       // 下载图的具体操作,改变a的属性，className令a标签可点击，href令能下载，download是下载的文件的名字
       //   console.log(link, name, data)
       let xmlFile = new File([data], "test.bpmn");
       console.log(xmlFile);
-      // if (data) {
-      // 	link.className = 'active'
-      // 	link.href = 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData
-      // 	link.download = name
-      // }
+      if (data) {
+        link.className = "active";
+        link.href = "data:application/bpmn20-xml;charset=UTF-8," + encodedData;
+        link.download = name;
+      }
     }
   }
 };
@@ -137,7 +137,7 @@ export default {
 .djs-palette .entry,
 .djs-palette .djs-palette-toggle {
   width: 80px !important;
-  height: 60px !important;
+  height: 80px !important;
   font-size: 40px !important;
   line-height: 50px !important;
 }
