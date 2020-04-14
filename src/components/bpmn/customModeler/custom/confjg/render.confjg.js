@@ -4,12 +4,12 @@ const customConfig = { // 自定义元素的配置
     'bpmn:StartEvent': {
         'field': 'start',
         'title': '开始节点',
-        'attr': { x: 0, y: 0, width: 40, height: 40 }
+        'attr': { x: 0, y: 0, width: 100, height: 100 }
     },
     'bpmn:EndEvent': {
         'field': 'end',
         'title': '结束节点',
-        'attr': { x: 0, y: 0, width: 40, height: 40 }
+        'attr': { x: 0, y: 0, width: 60, height: 60 }
     },
     'bpmn:SequenceFlow': {
         'field': 'flow',
@@ -18,22 +18,22 @@ const customConfig = { // 自定义元素的配置
     'bpmn:Task': {
         'field': 'rules',
         'title': '普通任务',
-        'attr': { x: 0, y: 0, width: 48, height: 48 }
+        'attr': { x: 0, y: 0, width: 60, height: 60 }
     },
     'bpmn:BusinessRuleTask': {
         'field': 'variable',
         'title': '转填任务',
-        'attr': { x: 0, y: 0, width: 48, height: 48 }
+        'attr': { x: 0, y: 0, width: 60, height: 60 }
     },
     'bpmn:SendTask': {
         'field': 'variable',
         'title': '抄送任务',
-        'attr': { x: 0, y: 0, width: 48, height: 48 }
+        'attr': { x: 0, y: 0, width: 60, height: 60 }
     },
     'bpmn:ExclusiveGateway': {
         'field': 'decision',
         'title': '网关',
-        'attr': { x: 0, y: 0, width: 48, height: 48 }
+        'attr': { x: 0, y: 0, width: 60, height: 60 }
     }
 }
 const hasLabelElements = ['bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:ExclusiveGateway', 'bpmn:DataObjectReference'] // 一开始就有label标签的元素类型
@@ -52,7 +52,7 @@ const customShapeAction = [{
     },
     {
         type: 'create.task',
-        action: ['bpmn:Task', 'activity', 'bpmn-icon-task', '普通任务']
+        action: ['bpmn:UserTask', 'activity', 'bpmn-icon-user-task', '普通任务']
     },
     {
         type: 'create.business-rsule-task',

@@ -129,8 +129,8 @@ export default {
 
 <style>
 .djs-palette {
-  top: 50%;
-  transform: translateY(50%);
+  top: 50% !important;
+  transform: translateY(-50%);
   width: 80px !important;
   text-align: center;
 }

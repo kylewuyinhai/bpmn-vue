@@ -380,11 +380,6 @@
       ],
       "properties": [
         {
-          "name": "assignee",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
           "name": "candidateUsers",
           "isAttr": true,
           "type": "String"
@@ -1217,11 +1212,11 @@
       "name": "NinWorkFlow",
       "isAbstract": true,
       "extends": [
-        "bpmn:BaseElement"
+        "bpmn:Task"
       ],
       "properties": [
         {
-          "name": "assignees",
+          "name": "assignee",
           "isAttr": true,
           "type": "String"
         },
@@ -1240,17 +1235,17 @@
       ],
       "properties": [
         {
-          "name": "handleMode",
+          "name": "handleType",
           "isAttr": true,
           "type": "String"
         },
         {
-          "name": "messageTip",
+          "name": "noticeType",
           "isAttr": true,
           "type": "String"
         },
         {
-          "name": "isForm",
+          "name": "formId",
           "isAttr": true,
           "type": "String"
         }
@@ -1260,21 +1255,21 @@
       "name": "NinUserTask",
       "isAbstract": true,
       "extends": [
-        "bpmn:Task"
+        "bpmn:UserTask"
       ],
       "properties": [
         {
-          "name": "handleMode",
+          "name": "handleType",
           "isAttr": true,
           "type": "String"
         },
         {
-          "name": "unCondition",
+          "name": "misMatch",
           "isAttr": true,
           "type": "String"
         },
         {
-          "name": "messageTip",
+          "name": "noticeType",
           "isAttr": true,
           "type": "String"
         },
@@ -1293,7 +1288,7 @@
       ],
       "properties": [
         {
-          "name": "isForm",
+          "name": "formId",
           "isAttr": true,
           "type": "String"
         }
@@ -1315,12 +1310,12 @@
       ],
       "properties": [
         {
-          "name": "handleMode",
+          "name": "handleType",
           "isAttr": true,
           "type": "String"
         },
         {
-          "name": "messageTip",
+          "name": "noticeType",
           "isAttr": true,
           "type": "String"
         },

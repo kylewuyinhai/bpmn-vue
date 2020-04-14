@@ -1,13 +1,7 @@
 export var xmlStr = `<?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="6.0.4">
-  <process id="Process_1" isExecutable="true">
-    <startEvent id="StartEvent_1acpsqt" />
-  </process>
+<process id="Process_1" isExecutable="true" />
   <bpmndi:BPMNDiagram id="BpmnDiagram_1">
-    <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="Process_1">
-      <bpmndi:BPMNShape id="StartEvent_1acpsqt_di" bpmnElement="StartEvent_1acpsqt">
-        <omgdc:Bounds x="152" y="82" width="36" height="36" />
-      </bpmndi:BPMNShape>
-    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="Process_1" />
   </bpmndi:BPMNDiagram>
 </definitions>`

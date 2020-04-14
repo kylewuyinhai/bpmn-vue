@@ -10,15 +10,15 @@ const customShapeAction = [ // shape
     },
     {
         type: 'create.task',
-        action: ['bpmn:Task', 'activity', 'icon-custom-task-none', '普通任务']
+        action: ['bpmn:UserTask', 'activity', 'icon-custom-task-none', '普通任务']
     },
     {
         type: 'create.change-task',
-        action: ['bpmn:Task', 'activity', 'icon-custom-task-change palette-title', '转填任务']
+        action: ['bpmn:BusinessRuleTask', 'activity', 'icon-custom-task-change palette-title', '转填任务']
     },
     {
         type: 'create.CC-task',
-        action: ['bpmn:Task', 'activity', 'icon-custom-task-cc palette-title', '抄送任务']
+        action: ['bpmn:SendTask', 'activity', 'icon-custom-task-cc palette-title', '抄送任务']
     },
     {
         type: 'create.end-event',

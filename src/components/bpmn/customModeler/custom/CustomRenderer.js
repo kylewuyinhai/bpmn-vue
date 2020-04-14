@@ -17,7 +17,7 @@ export default function CustomRenderer(eventBus, styles, bpmnRenderer) {
     var computeStyle = styles.computeStyle
 
     this.drawElements = function(parentNode, element) {
-        console.log(element)
+        console.log(element.type)
         const type = element.type // 获取到类型
         if (type !== 'label') {
             if (customElements.includes(type)) { // or customConfig[type]
@@ -65,9 +65,11 @@ function drawCustomElements(parentNode, element) {
         const text = svgCreate('text', {
             x: attr.x,
             y: attr.y + attr.height + 20,
-            "font-size": "14",
+            "font-size": "20",
             "fill": "#000"
         })
+        console.log(element.type);
+        
         text.innerHTML = element.businessObject.name
         svgAppend(parentNode, text)
         console.log(text)
