@@ -5,7 +5,7 @@ import CustomContextPadProvider from './CustomContextPadProvider'
 
 
 export default {
-    __init__: ['paletteProvider', 'contextPadProvider','customRenderer'],
+    __init__: ['paletteProvider', 'contextPadProvider', 'customRenderer'],
     paletteProvider: ['type', CustomPalette],
     contextPadProvider: ['type', CustomContextPadProvider],
     customRenderer: ['type', CustomRenderer]

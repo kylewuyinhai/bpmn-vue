@@ -1,7 +1,7 @@
 
 const flowAction = { // 线
     type: 'global-connect-tool',
-    action: ['bpmn:SequenceFlow', 'tools', 'bpmn-icon-connection-multi', '连接线']
+    action: ['bpmn:SequenceFlow', 'tools', 'icon-custom icon-custom-flow', '连接线']
 }
 const customShapeAction = [ // shape
     {

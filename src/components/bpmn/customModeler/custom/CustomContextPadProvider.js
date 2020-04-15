@@ -130,7 +130,7 @@ ContextPadProvider.prototype.getContextPadEntries = function(element) {
     }
 
     // 只有点击列表中的元素才会产生的元素
-    if (isAny(businessObject, ['bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:BusinessRuleTask', 'bpmn:ExclusiveGateway', 'bpmn:DataObjectReference'])) {
+    if (isAny(businessObject, ['bpmn:StartEvent', 'bpmn:UserTask', 'bpmn:BusinessRuleTask', 'bpmn:SendTask', 'bpmn:ExclusiveGateway', 'bpmn:DataObjectReference'])) {
         Object.assign(actions, {
             ...batchCreateCustom(customShapeAction, createAction),
             ...batchCreateCustom(customFlowAction, createConnect), // 连接线

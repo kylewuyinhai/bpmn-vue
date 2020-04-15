@@ -1,15 +1,15 @@
-const customElements = ['bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Task', 'bpmn:BusinessRuleTask', 'bpmn:SendTask', 'bpmn:DataObjectReference'] // 自定义元素的类型
+const customElements = ['bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Task', 'bpmn:BusinessRuleTask', 'bpmn:SendTask'] // 自定义元素的类型
 const STATICPATH = 'https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/' // 静态文件路径
 const customConfig = { // 自定义元素的配置
     'bpmn:StartEvent': {
         'field': 'start',
         'title': '开始节点',
-        'attr': { x: 0, y: 0, width: 100, height: 100 }
+        'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
     'bpmn:EndEvent': {
         'field': 'end',
         'title': '结束节点',
-        'attr': { x: 0, y: 0, width: 60, height: 60 }
+        'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
     'bpmn:SequenceFlow': {
         'field': 'flow',
@@ -18,22 +18,22 @@ const customConfig = { // 自定义元素的配置
     'bpmn:Task': {
         'field': 'rules',
         'title': '普通任务',
-        'attr': { x: 0, y: 0, width: 60, height: 60 }
+        'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
     'bpmn:BusinessRuleTask': {
         'field': 'variable',
         'title': '转填任务',
-        'attr': { x: 0, y: 0, width: 60, height: 60 }
+        'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
     'bpmn:SendTask': {
-        'field': 'variable',
+        'field': 'decision',
         'title': '抄送任务',
-        'attr': { x: 0, y: 0, width: 60, height: 60 }
+        'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
     'bpmn:ExclusiveGateway': {
         'field': 'decision',
         'title': '网关',
-        'attr': { x: 0, y: 0, width: 60, height: 60 }
+        'attr': { x: 0, y: 0, width: 80, height: 80 }
     }
 }
 const hasLabelElements = ['bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:ExclusiveGateway', 'bpmn:DataObjectReference'] // 一开始就有label标签的元素类型
@@ -59,12 +59,16 @@ const customShapeAction = [{
         action: ['bpmn:BusinessRuleTask', 'activity', 'bpmn-icon-business-rule-task', '转填任务']
     },
     {
-        type: 'create.mail-task',
+        type: 'create.cc-task',
         action: ['bpmn:SendTask', 'activity', 'bpmn-icon-send-task', '转填任务']
     },
     {
         type: 'create.exclusive-gateway',
         action: ['bpmn:ExclusiveGateway', 'activity', 'bpmn-icon-gateway-none', '网关']
+    },
+    { // 线
+        type: 'global-connect-tool',
+        action: ['bpmn:SequenceFlow', 'tools', 'bpmn-icon-connection-multi', '连接线']
     }
 ]
 const customFlowAction = [

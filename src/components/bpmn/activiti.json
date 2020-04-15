@@ -1291,6 +1291,11 @@
           "name": "formId",
           "isAttr": true,
           "type": "String"
+        },
+        {
+          "name": "noticeType",
+          "isAttr": true,
+          "type": "String"
         }
       ]
     },

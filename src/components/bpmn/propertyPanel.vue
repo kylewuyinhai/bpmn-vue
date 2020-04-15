@@ -105,7 +105,11 @@
           </template>
           <el-form :model="flow" label-width="100px" size="small">
             <el-form-item>
-              <el-input v-model="flow.condition" placeholder @change="updateFlow"></el-input>
+              <el-input
+                v-model="flow.condition"
+                placeholder
+                @change="updateFlow($event, 'condition')"
+              ></el-input>
             </el-form-item>
           </el-form>
         </el-collapse-item>
@@ -116,13 +120,13 @@
           <el-form :model="flow" label-width="100px" size="small">
             <el-form-item v-if="isSequenceFlowToRule" label="传递字段">
               <el-input
-                v-model="form.name"
+                v-model="flow.test"
                 clearable
                 placeholder="请输入名称"
                 class="el_input"
-                @change="updateName"
+                @change="updateFlow($event, 'test')"
               />
-              <el-select v-model="model" placeholder>
+              <el-select v-model="flow.test" placeholder>
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -150,16 +154,24 @@ export default {
   },
   data() {
     return {
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕"
+        },
+        {
+          value: "选项2",
+          label: "双皮奶"
+        }
+      ],
+      //多选元素
       selectedElements: [],
+      //当前点击元素
       element: {},
+      //根元素
       rootElement: null,
       activeName: ["1", "2", "3"],
-      //通用表单
-      form1: {
-        name: "",
-        handleType: 1
-      },
-      //执行人/发起人表单
+      //面板表单
       form: {
         assigneeType: 1,
         assignee: "",
@@ -170,12 +182,11 @@ export default {
         name: "",
         handleType: 1
       },
-      //操作表单
-      operation: {},
       // 箭头条件表单
       flow: {
         condition: "",
-        transferData: {}
+        transferData: {},
+        test: ""
       }
     };
   },
@@ -254,7 +265,9 @@ export default {
           this.element && this.setDefaultPropertiesFirst(this.element.type);
         }, 0);
       });
-
+      this.modeler.on("connect.end", e => {
+        console.log(e,'==========================================');
+      });
       this.modeler.on("selection.changed", e => {
         console.log("selection change");
         this.selectedElements = e.newSelection;
@@ -290,44 +303,17 @@ export default {
       console.log(element, "serDefaule");
       if (element && element.type !== "bpmn:Process") {
         const { businessObject } = element;
+        if (element.type === "bpmn:SequenceFlow") {
+          this.flow = {
+            ...businessObject,
+            ...businessObject.$attrs
+          };
+          return;
+        }
         this.form = {
           ...businessObject,
           ...businessObject.$attrs
         };
-        // if (typeof businessObject.messageTip === "string") {
-        //   this.operation.messageTip = businessObject.messageTip.split(",");
-        //   const temArray = this.operation.messageTip.map(e => {
-        //     return +e;
-        //   });
-        //   this.operation.messageTip = temArray;
-        // }
-        // if (businessObject.$attrs.messageTip) {
-        //   this.operation.messageTip =
-        //     typeof businessObject.$attrs.messageTip === "string"
-        //       ? [...businessObject.$attrs.messageTip.split(",")]
-        //       : JSON.parse(JSON.stringify(businessObject.$attrs.messageTip));
-        // } else {
-        //   this.operation.messageTip = [1];
-        // }
-        this.flow = {
-          condition:
-            businessObject.condition ||
-            this.updatePropertiesOnce({ condition: "" }),
-          transferData:
-            businessObject.transferData ||
-            this.updatePropertiesOnce({ transferData: {} })
-        };
-        // this.form.candidateStarterUsersNames = candidateStarterUsersNames;
-        // if (element.type === "bpmn:Process") {
-        //   this.setProcessUser();
-        // } else if (this.isUserTask) {
-        //   this.setUserTaskUser();
-        // }
-        // this.setListener(element, businessObject);
-        // this.setTaskListener(element, businessObject);
-        // if (businessObject.documentation) {
-        //   // this.form.description = businessObject.documentation[0].text
-        // }
       }
     },
     setDefaultPropertiesFirst(type) {
@@ -356,7 +342,7 @@ export default {
         },
         "bpmn:SendTask": {
           assigneeType: 2,
-          assignee: "",
+          assignee: ""
         },
         "bpmn:BusinessRuleTask": {
           handleType: 2,
@@ -365,9 +351,13 @@ export default {
           backType: 2,
           noticeType: [2, 3],
           misMatch: 1,
-          formId: ''
+          formId: ""
         },
-
+        "bpmn:SequenceFlow": {
+          condition: "",
+          transferData: {},
+          test: ""
+        }
       };
       this.updateProperties(propertiesMap[type] || {});
     },
@@ -413,21 +403,22 @@ export default {
     handleChangeModel(value) {
       this.updateProperties({ handleType: value });
     },
-    updateFlow(value) {
+    updateFlow(value, type) {
       const { businessObject } = this.element;
       const moddle = this.modeler.get("moddle");
       if (
         businessObject.$type === "bpmn:SequenceFlow" &&
-        !businessObject.conditionExpression
+        !businessObject.conditionExpression &&
+        type === "condition"
       ) {
         businessObject.conditionExpression = moddle.create(
           "bpmn:FormalExpression",
           { body: value }
         );
-      } else if (businessObject.conditionExpression) {
+      } else if (businessObject.conditionExpression && type === "condition") {
         businessObject.conditionExpression.body = value;
       }
-      this.updateProperties({ condition: value });
+      this.updateProperties({ type: value });
     },
     handleChangeOperation(type) {
       let value = JSON.parse(JSON.stringify(this.form[type]));

@@ -67,16 +67,27 @@ export default {
           activiti: activitiModdleDescriptor
         }
       });
-      this.bpmnModeler.importXML(xmlStr, err => {
-        if (err) {
-          console.error(err);
-        } else {
-          this.success();
-        }
-        // 让图能自适应屏幕
-        var canvas = this.bpmnModeler.get("canvas");
-        canvas.zoom("fit-viewport");
-      });
+      if (xmlStr) {
+        this.bpmnModeler.importXML(xmlStr, err => {
+          if (err) {
+            console.error(err);
+          } else {
+            this.success();
+          }
+          // 让图能自适应屏幕
+          var canvas = this.bpmnModeler.get("canvas");
+          canvas.zoom("fit-viewport");
+        });
+      } else {
+        this.bpmnModeler.createDiagram(function(err) {
+          if (err) {
+            console.error(err);
+          } else {
+            //这里还没用到这个，先注释掉吧
+            // this.success();
+          }
+        });
+      }
     },
     success() {
       console.log("创建成功");
@@ -108,11 +119,11 @@ export default {
       });
     },
     saveSVG(done) {
-      this.bpmnModeler.saveSVG(done)
+      this.bpmnModeler.saveSVG(done);
     },
     setEncoded(link, name, data) {
       // 把xml转换为URI，下载要用到的
-      const encodedData = encodeURIComponent(data)
+      const encodedData = encodeURIComponent(data);
       // 下载图的具体操作,改变a的属性，className令a标签可点击，href令能下载，download是下载的文件的名字
       //   console.log(link, name, data)
       let xmlFile = new File([data], "test.bpmn");

@@ -105,7 +105,9 @@
 .djs-context-pad .entry:hover {
     border: 1px solid #1890ff;
 }
-
+.icon-custom-flow {
+    background-image: url('https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/flow.png');
+}
 .djs-context-pad .entry {
     background-size: 94%;
     transition: all 0.3s;

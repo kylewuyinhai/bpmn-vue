@@ -19,11 +19,15 @@ export default function CustomRenderer(eventBus, styles, bpmnRenderer) {
     this.drawElements = function(parentNode, element) {
         console.log(element.type)
         const type = element.type // 获取到类型
+        !element.businessObject.noticeType&& (element.businessObject.noticeType = [1] )
         if (type !== 'label') {
             if (customElements.includes(type)) { // or customConfig[type]
                 return drawCustomElements(parentNode, element)
             }
             const shape = bpmnRenderer.drawShape(parentNode, element)
+            if(type === 'bpmn:SequenceFlow'){
+                shape.style.setProperty('stroke', 'red')
+            }
             return shape
         } else {
             element
@@ -42,6 +46,9 @@ CustomRenderer.prototype.canRender = function(element) {
 }
 
 CustomRenderer.prototype.drawShape = function(parentNode, element) {
+    return this.drawElements(parentNode, element)
+}
+CustomRenderer.prototype.drawConnection = function(parentNode, element) {
     return this.drawElements(parentNode, element)
 }
 
