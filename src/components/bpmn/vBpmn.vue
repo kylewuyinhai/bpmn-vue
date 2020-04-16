@@ -52,6 +52,10 @@ export default {
       const canvas = this.$refs.canvas;
       this.bpmnModeler = new customModeler({
         container: canvas,
+        bpmnRenderer:{
+          defaultFillColor: '#fff',
+          defaultStrokeColor: '#1a78b4'
+        },
         propertiesPanel: {
           parent: "#js-properties-panel"
         },

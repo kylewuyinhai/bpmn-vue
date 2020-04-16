@@ -25,9 +25,6 @@ export default function CustomRenderer(eventBus, styles, bpmnRenderer) {
                 return drawCustomElements(parentNode, element)
             }
             const shape = bpmnRenderer.drawShape(parentNode, element)
-            if(type === 'bpmn:SequenceFlow'){
-                shape.style.setProperty('stroke', 'red')
-            }
             return shape
         } else {
             element
@@ -68,16 +65,16 @@ function drawCustomElements(parentNode, element) {
     element['height'] = attr.height
     svgAppend(parentNode, customIcon)
         // 判断是否有name属性来决定是否要渲染出label
-    if (!hasLabelElements.includes(type) && element.businessObject.name) {
+    if (!hasLabelElements.includes(type) && !element.businessObject.name) {
         const text = svgCreate('text', {
             x: attr.x,
             y: attr.y + attr.height + 20,
-            "font-size": "20",
+            "font-size": "12",
             "fill": "#000"
         })
         console.log(element.type);
         
-        text.innerHTML = element.businessObject.name
+        text.innerHTML = '开始'
         svgAppend(parentNode, text)
         console.log(text)
     }

@@ -1,4 +1,4 @@
-const customElements = ['bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:Task', 'bpmn:BusinessRuleTask', 'bpmn:SendTask'] // 自定义元素的类型
+const customElements = ['bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:UserTask', 'bpmn:BusinessRuleTask', 'bpmn:SendTask'] // 自定义元素的类型
 const STATICPATH = 'https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/' // 静态文件路径
 const customConfig = { // 自定义元素的配置
     'bpmn:StartEvent': {
@@ -15,18 +15,18 @@ const customConfig = { // 自定义元素的配置
         'field': 'flow',
         'title': '连接线',
     },
-    'bpmn:Task': {
+    'bpmn:UserTask': {
         'field': 'rules',
         'title': '普通任务',
         'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
     'bpmn:BusinessRuleTask': {
-        'field': 'variable',
+        'field': 'decision',
         'title': '转填任务',
         'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
     'bpmn:SendTask': {
-        'field': 'decision',
+        'field': 'variable',
         'title': '抄送任务',
         'attr': { x: 0, y: 0, width: 80, height: 80 }
     },
@@ -36,7 +36,7 @@ const customConfig = { // 自定义元素的配置
         'attr': { x: 0, y: 0, width: 80, height: 80 }
     }
 }
-const hasLabelElements = ['bpmn:StartEvent', 'bpmn:EndEvent', 'bpmn:ExclusiveGateway', 'bpmn:DataObjectReference'] // 一开始就有label标签的元素类型
+const hasLabelElements = [ 'bpmn:ExclusiveGateway', 'bpmn:DataObjectReference'] // 一开始就有label标签的元素类型
 
 const flowAction = {
     type: 'global-connect-tool',
@@ -51,7 +51,7 @@ const customShapeAction = [{
         action: ['bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none', '结束节点']
     },
     {
-        type: 'create.task',
+        type: 'create.user-task',
         action: ['bpmn:UserTask', 'activity', 'bpmn-icon-user-task', '普通任务']
     },
     {

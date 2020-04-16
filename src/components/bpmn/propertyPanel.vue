@@ -7,7 +7,7 @@
           <template slot="title">
             <span class="el_title">通用</span>
           </template>
-          <el-form :model="form" label-width="100px" size="small">
+          <el-form :model="form" label-width="100px" size="small" @submit.native.prevent>
             <el-form-item label="任务名称">
               <el-input
                 v-model="form.name"
