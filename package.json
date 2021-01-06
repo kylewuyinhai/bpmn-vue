@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "activiti-bpmn-moddle": "^4.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bpmn-js": "^6.3.4",
     "camunda-bpmn-moddle": "^4.4.0",
     "core-js": "^3.6.4",
